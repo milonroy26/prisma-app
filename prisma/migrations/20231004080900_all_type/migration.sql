@@ -1,12 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the `type` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropTable
-DROP TABLE `type`;
-
 -- CreateTable
 CREATE TABLE `TypeNumber` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
@@ -48,6 +39,41 @@ CREATE TABLE `TypeString` (
 CREATE TABLE `Product` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `role` ENUM('Apple', 'Banana', 'Oranges', 'Ramphal') NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `TimeDate` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `col1` DATE NOT NULL,
+    `col2` DATETIME NOT NULL,
+    `col3` TIMESTAMP NOT NULL,
+    `col4` TIME NOT NULL,
+    `col6` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `BooleanChar` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `col1` BOOLEAN NOT NULL,
+    `col3` CHAR(100) NOT NULL,
+
+    UNIQUE INDEX `BooleanChar_col3_key`(`col3`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `BinaryLOB` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `col1` BLOB NOT NULL,
+    `col2` LONGBLOB NOT NULL,
+    `col3` TINYBLOB NOT NULL,
+    `col4` MEDIUMBLOB NOT NULL,
+    `col5` BINARY(100) NOT NULL,
+    `col6` VARBINARY(100) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
