@@ -11,10 +11,12 @@ datasource db {
 }
 
 model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
+  id      Int       @id @default(autoincrement())
+  email   String    @unique
   pasword String
   profile Profile?
+  post    Post[]
+  comment Comment[]
 }
 
 model Profile {
@@ -23,78 +25,98 @@ model Profile {
   mobile String
   city   String
   userID Int    @unique
-  User   User   @relation(fields: [userID], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  user   User   @relation(fields: [userID], references: [id], onDelete: Restrict, onUpdate: Cascade)
 }
 
-model TypeNumber {
-  id   Int @id @default(autoincrement()) //Primary key  , Integer length 11  & Auto Increment 
-  col1 Int @db.UnsignedInt // UNSIGNED Integer length 11  Equivalent Column
-
-  col2 BigInt //Big Integer length 20  Equivalent Column
-  col3 BigInt @db.UnsignedBigInt // UNSIGNED Big Integer length 20  Equivalent Column
-
-  col4 Int @db.SmallInt // Small Integer length 6 Equivalent Column
-  col5 Int @db.UnsignedSmallInt // UNSIGNED Small Integer length 6 Equivalent Column
-
-  col6 Int @db.MediumInt // Medium Integer length 9 Equivalent Column
-  col7 Int @db.UnsignedMediumInt //UNSIGNED Medium Integer length 8 Equivalent Column
-
-  col8 Int @db.TinyInt // Tiny Integer length 4 Equivalent Column
-  col9 Int @db.UnsignedTinyInt // UNSIGNED Tiny Integer length 3 Equivalent Column
-
-  col10 Decimal // decimal(65,30) 	Equivalent Column
-  col11 Float // Double Equivalent Column
-  col12 Float   @db.Float // Float Equivalent Column
-
-  col13 BigInt @default(10) //Default Value 10 Big Integer length 20  Equivalent Column
-  col14 BigInt @unique //Unique Big Integer length 20  Equivalent Column
+model Post {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String    @db.LongText
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  comment     Comment[]
 }
 
-model TypeString {
-  id   Int     @id @default(autoincrement()) // Primary key  , Integer length 11  & Auto Increment Equivalent Column
-  col1 String // Varchar Length 191 Equivalent Column
-  col2 String? //Nullable Varchar Length 191 Equivalent Column
-  col3 String  @default("Bangladesh") //Default value Bangladesh Varchar Length 191 Equivalent Column 
-  col4 String  @db.VarChar(1000) // Varchar Length 1000 Equivalent Column
-  col6 String  @db.TinyText // TinyText Equivalent Column
-  col7 String  @db.Text // Text Equivalent Column
-  col8 String  @db.LongText // Long Text Equivalent Column
-  col9 String  @db.MediumText // Medium Text Equivalent Column    
+model Comment {
+  id          Int    @id @default(autoincrement())
+  description String
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  postId Int
+  post   Post @relation(fields: [postId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 }
 
-enum ProductType {
-  Apple
-  Banana
-  Oranges
-  Ramphal
-}
+// model TypeNumber {
+//   id   Int @id @default(autoincrement()) //Primary key  , Integer length 11  & Auto Increment 
+//   col1 Int @db.UnsignedInt // UNSIGNED Integer length 11  Equivalent Column
 
-model Product {
-  id   Int         @id @default(autoincrement())
-  role ProductType
-}
+//   col2 BigInt //Big Integer length 20  Equivalent Column
+//   col3 BigInt @db.UnsignedBigInt // UNSIGNED Big Integer length 20  Equivalent Column
 
-model TimeDate {
-  id   Int      @id @default(autoincrement()) // Primary key  , Integer length 11  & Auto Increment Equivalent Column
-  col1 DateTime @db.Date // Date Equivalent Column
-  col2 DateTime @db.DateTime() // DateTime Equivalent Column
-  col3 DateTime @db.Timestamp() // 	Timestamp  Equivalent Column Default current_timestamp() 	
-  col4 DateTime @db.Time // Time Equivalent Column
-  col6 DateTime // DateTime Length 3 Equivalent Column
-}
+//   col4 Int @db.SmallInt // Small Integer length 6 Equivalent Column
+//   col5 Int @db.UnsignedSmallInt // UNSIGNED Small Integer length 6 Equivalent Column
 
-model BooleanChar {
-  id   Int     @id @default(autoincrement()) // Primary key  , Integer length 11  & Auto Increment Equivalent Column
-  col1 Boolean // Boolean Equivalent Column
-  col3 String  @unique @db.Char(100) // Char Length 100 Equivalent Column
-}
+//   col6 Int @db.MediumInt // Medium Integer length 9 Equivalent Column
+//   col7 Int @db.UnsignedMediumInt //UNSIGNED Medium Integer length 8 Equivalent Column
 
-model BinaryLOB {
-  id   Int   @id @default(autoincrement()) // Primary key  , Integer length 11  & Auto Increment Equivalent Column
-  col1 Bytes @db.Blob // Blob Equivalent Column
-  col2 Bytes @db.LongBlob // Long Blob Equivalent Column
-  col3 Bytes @db.TinyBlob // Tiny Blob Equivalent Column
-  col4 Bytes @db.MediumBlob // Medium Blob Equivalent Column
-  col5 Bytes @db.Binary(100) // Binary Equivalent Column
-  col6 Bytes @db.VarBinary(100) // Var Binary Equivalent Column
-}
+//   col8 Int @db.TinyInt // Tiny Integer length 4 Equivalent Column
+//   col9 Int @db.UnsignedTinyInt // UNSIGNED Tiny Integer length 3 Equivalent Column
+
+//   col10 Decimal // decimal(65,30) 	Equivalent Column
+//   col11 Float // Double Equivalent Column
+//   col12 Float   @db.Float // Float Equivalent Column
+
+//   col13 BigInt @default(10) //Default Value 10 Big Integer length 20  Equivalent Column
+//   col14 BigInt @unique //Unique Big Integer length 20  Equivalent Column
+// }
+
+// model TypeString {
+//   id   Int     @id @default(autoincrement()) // Primary key  , Integer length 11  & Auto Increment Equivalent Column
+//   col1 String // Varchar Length 191 Equivalent Column
+//   col2 String? //Nullable Varchar Length 191 Equivalent Column
+//   col3 String  @default("Bangladesh") //Default value Bangladesh Varchar Length 191 Equivalent Column 
+//   col4 String  @db.VarChar(1000) // Varchar Length 1000 Equivalent Column
+//   col6 String  @db.TinyText // TinyText Equivalent Column
+//   col7 String  @db.Text // Text Equivalent Column
+//   col8 String  @db.LongText // Long Text Equivalent Column
+//   col9 String  @db.MediumText // Medium Text Equivalent Column    
+// }
+
+// enum ProductType {
+//   Apple
+//   Banana
+//   Oranges
+//   Ramphal
+// }
+
+// model Product {
+//   id   Int         @id @default(autoincrement())
+//   role ProductType
+// }
+
+// model TimeDate {
+//   id   Int      @id @default(autoincrement()) // Primary key  , Integer length 11  & Auto Increment Equivalent Column
+//   col1 DateTime @db.Date // Date Equivalent Column
+//   col2 DateTime @db.DateTime() // DateTime Equivalent Column
+//   col3 DateTime @db.Timestamp() // 	Timestamp  Equivalent Column Default current_timestamp() 	
+//   col4 DateTime @db.Time // Time Equivalent Column
+//   col6 DateTime // DateTime Length 3 Equivalent Column
+// }
+
+// model BooleanChar {
+//   id   Int     @id @default(autoincrement()) // Primary key  , Integer length 11  & Auto Increment Equivalent Column
+//   col1 Boolean // Boolean Equivalent Column
+//   col3 String  @unique @db.Char(100) // Char Length 100 Equivalent Column
+// }
+
+// model BinaryLOB {
+//   id   Int   @id @default(autoincrement()) // Primary key  , Integer length 11  & Auto Increment Equivalent Column
+//   col1 Bytes @db.Blob // Blob Equivalent Column
+//   col2 Bytes @db.LongBlob // Long Blob Equivalent Column
+//   col3 Bytes @db.TinyBlob // Tiny Blob Equivalent Column
+//   col4 Bytes @db.MediumBlob // Medium Blob Equivalent Column
+//   col5 Bytes @db.Binary(100) // Binary Equivalent Column
+//   col6 Bytes @db.VarBinary(100) // Var Binary Equivalent Column
+// }
